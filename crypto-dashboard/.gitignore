@@ -1,0 +1,27 @@
+# dependencies
+/node_modules
+
+# production
+/dist
+
+# Vite
+/.vite
+.vitepress/cache
+
+# build output
+/build
+/.output
+
+# testing
+/coverage
+*.log
+
+# local env
+.env
+.env.*.local
+
+# system files
+.DS_Store
+Thumbs.db
+
+#
