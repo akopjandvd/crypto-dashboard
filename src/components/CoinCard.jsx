@@ -12,7 +12,7 @@ function CoinCard({ coin }) {
       </div>
       <div className="text-right">
         <p className="text-lg font-bold" data-testid="price">
-          ${coin.current_price.toLocaleString()}
+          ${coin.current_price.toLocaleString("en-US")}
         </p>
         <p
           className={`text-sm ${
