@@ -13,5 +13,5 @@ const coin = {
 test("renders coin name and price", () => {
   render(<CoinCard coin={coin} />);
   expect(screen.getByText("Bitcoin")).toBeInTheDocument();
-  expect(screen.getByText(/\$68 000/)).toBeInTheDocument();
+  expect(screen.getByTestId("price")).toHaveTextContent("$68 000");
 });
