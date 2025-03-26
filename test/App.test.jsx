@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import App from "../src/App"; 
+import { MemoryRouter } from "react-router-dom";
 
+import "@testing-library/jest-dom";
+import App from "../src/App";
 
 // Mockoljuk a fetch-et, hogy ne a valódi API-t hívja
 beforeEach(() => {
@@ -9,15 +10,33 @@ beforeEach(() => {
     Promise.resolve({
       json: () =>
         Promise.resolve([
-          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 68000, price_change_percentage_24h: 1, image: "" },
-          { id: "eth", name: "Ethereum", symbol: "eth", current_price: 3500, price_change_percentage_24h: 2, image: "" },
+          {
+            id: "btc",
+            name: "Bitcoin",
+            symbol: "btc",
+            current_price: 68000,
+            price_change_percentage_24h: 1,
+            image: "",
+          },
+          {
+            id: "eth",
+            name: "Ethereum",
+            symbol: "eth",
+            current_price: 3500,
+            price_change_percentage_24h: 2,
+            image: "",
+          },
         ]),
     })
   );
 });
 
 test("renders search input and filters coin list", async () => {
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 
   const searchInput = await screen.findByPlaceholderText("Search coins...");
   expect(searchInput).toBeInTheDocument();
