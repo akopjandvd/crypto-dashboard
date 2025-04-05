@@ -1,17 +1,33 @@
-function CoinCard({ coin }) {
+import React from "react";
+
+function CoinCard({ coin, isFavorite, toggleFavorite }) {
+  const dynamicTextSize = coin.name.length > 12 ? "text-xs" : "text-sm";
+  if (!coin || !coin.current_price || coin.price_change_percentage_24h === undefined) {
+    return null;
+  }
+  
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-md flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <img src={coin.image} alt={coin.name} className="w-10 h-10" />
-        <div>
-          <h2 className="text-lg font-semibold">{coin.name}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+    <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 w-full h-18 flex items-start justify-between gap-4 overflow-hidden">
+      <div className="flex items-center gap-4 min-w-0 flex-1">
+        <img
+          src={coin.image}
+          alt={coin.name}
+          className="w-10 h-10 flex-shrink-0"
+        />
+        <div className="min-w-0">
+          <h2 className="text-sm sm:text-xs font-medium break-words leading-snug max-w-[140px] max-h-[3.5rem] overflow-hidden">
+            {coin.name}
+          </h2>
+
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             {coin.symbol.toUpperCase()}
           </p>
         </div>
       </div>
-      <div className="text-right">
-        <p className="text-lg font-bold" data-testid="price">
+
+      {/* Jobb oldal: ár + %-os változás */}
+      <div className="text-right whitespace-nowrap pr-8">
+        <p className="text-base font-bold" data-testid="price">
           ${coin.current_price.toLocaleString("en-US")}
         </p>
         <p
@@ -24,6 +40,17 @@ function CoinCard({ coin }) {
           {coin.price_change_percentage_24h.toFixed(2)}%
         </p>
       </div>
+
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          toggleFavorite(coin.id);
+        }}
+        className="absolute top-2 right-2 text-xl text-yellow-400 hover:text-yellow-500"
+        title={isFavorite ? "Unfavorite" : "Favorite"}
+      >
+        {isFavorite ? "★" : "☆"}
+      </button>
     </div>
   );
 }
