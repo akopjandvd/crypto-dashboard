@@ -1,25 +1,32 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { vi } from "vitest";
+
 
 import "@testing-library/jest-dom";
 import App from "../src/App";
 
-// Mockoljuk a fetch-et, hogy ne a valódi API-t hívja
+
+beforeAll(() => {
+  window.alert = vi.fn(); 
+});
+
 beforeEach(() => {
   global.fetch = vi.fn(() =>
     Promise.resolve({
+      ok: true,
       json: () =>
         Promise.resolve([
           {
-            id: "btc",
+            id: "bitcoin",
             name: "Bitcoin",
             symbol: "btc",
             current_price: 68000,
-            price_change_percentage_24h: 1,
-            image: "",
+            price_change_percentage_24h: 2.5,
+            image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
           },
           {
-            id: "eth",
+            id: "ethereum",
             name: "Ethereum",
             symbol: "eth",
             current_price: 3500,

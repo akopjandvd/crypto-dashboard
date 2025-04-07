@@ -42,7 +42,9 @@ function CoinCard({ coin, isFavorite, toggleFavorite }) {
           </div>
         </div>
         <div className="flex flex-col justify-center text-right">
-          <p className="text-lg font-bold">
+          <p 
+            data-testid="price"
+            className="text-lg font-bold">
             ${coin.current_price?.toLocaleString("en-US")}
           </p>
           <p
