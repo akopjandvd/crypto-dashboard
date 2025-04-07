@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 function Layout({ children }) {
   const navigate = useNavigate();
@@ -17,12 +18,7 @@ function Layout({ children }) {
   });
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
+    const root = document.documentElement;
     if (theme === "dark") {
       root.classList.add("dark");
     } else {
@@ -33,6 +29,19 @@ function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4">
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: Infinity,
+          style: {
+            background: "#1f2937",
+            color: "#fff",
+            borderRadius: "10px",
+            padding: "12px 16px",
+          },
+        }}
+      />
+
       <div className="flex justify-between items-center mb-6">
         {location.pathname !== "/" ? (
           <button
@@ -42,7 +51,7 @@ function Layout({ children }) {
             ← Back
           </button>
         ) : (
-          <div /> // üres placeholder
+          <div />
         )}
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

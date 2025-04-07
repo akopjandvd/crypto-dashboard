@@ -123,7 +123,9 @@ function Favorites() {
             <h2 className="text-xl font-semibold mb-2">Search results:</h2>
             <div className="grid gap-4">
               {results.map((coin) => {
-                const isAlreadyFavorite = favorites.some((fav) => fav.id === coin.id);
+                const isAlreadyFavorite = favorites.some(
+                  (fav) => fav.id === coin.id
+                );
 
                 return coin?.symbol ? (
                   <div
