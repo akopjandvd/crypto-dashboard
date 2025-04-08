@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { Link } from "react-router-dom";
+import { fetchCoins } from "../utils/fetchCoins"
 
 function TopMovers() {
-  const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
 
   useEffect(() => {
-    const fetchCoins = async () => {
+    const loadCoins = async () => {
       try {
-        const res = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1"
-        );
-        const data = await res.json();
-        setCoins(data);
-      } catch (error) {
-        console.error("Failed to fetch coin data:", error);
+        const data = await fetchCoins(); 
+        setCoins(data); 
+      } catch (err) {
+        console.error("Failed to fetch top movers:", err);
+        alert("⚠️ Failed to load coin data. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchCoins();
-  }, []);
+    loadCoins();
+    }, []);
 
   const topGainers = [...coins]
     .sort(
