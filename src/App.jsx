@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import CoinCard from "./components/CoinCard";
 import Layout from "./components/Layout";
-import { Link } from "react-router-dom";
 import ExportToCSV from "./components/ExportToCSV";
+import { fetchCoins } from "./utils/fetchCoins";
+
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [sortOption, setSortOption] = useState("market_cap-desc");
+  const [loading, setLoading] = useState(true);
 
   const toggleFavorite = (id) => {
     const exists = favoriteCoins.find((c) => c.id === id);
@@ -30,36 +33,18 @@ function App() {
   };
 
   useEffect(() => {
-    const fetchCoins = async () => {
-      const cached = localStorage.getItem("cachedCoins");
-      const cachedAt = localStorage.getItem("cachedCoinsAt");
-
-      const now = Date.now();
-      const fiveMinutes = 5 * 60 * 1000;
-
-      if (cached && cachedAt && now - parseInt(cachedAt) < fiveMinutes) {
-        setCoins(JSON.parse(cached));
-        return;
-      }
-
+    const loadCoins = async () => {
       try {
-        const res = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1"
-        );
-        if (!res.ok) {
-          throw new Error(`Error ${res.status}: ${res.statusText}`);
-        }
-        const data = await res.json();
+        const data = await fetchCoins();
         setCoins(data);
-        localStorage.setItem("cachedCoins", JSON.stringify(data));
-        localStorage.setItem("cachedCoinsAt", Date.now().toString());
       } catch (err) {
-        console.error("Failed to fetch coins:", err);
+        console.error(err);
         alert("⚠️ Failed to load coin data. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchCoins();
+    loadCoins();
   }, []);
 
   useEffect(() => {
@@ -112,7 +97,6 @@ function App() {
                   </button>
                 </div>
               ));
-
               sessionStorage.setItem(alertKey, "1");
             }
           }
@@ -120,7 +104,7 @@ function App() {
       } catch (err) {
         console.error("Price alert check failed", err);
       }
-    }, 30000); // 30s
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);
@@ -181,6 +165,12 @@ function App() {
           >
             📊 Top Movers (24h)
           </Link>
+          <Link
+            to="/portfolio"
+            className="text-blue-600 hover:underline text-sm block"
+          >
+            Portfolio
+          </Link>
 
           <div className="flex justify-center gap-2 flex-wrap items-center">
             <label
@@ -223,7 +213,9 @@ function App() {
           <ExportToCSV coins={filteredCoins} />
         </div>
 
-        {filteredCoins.length === 0 ? (
+        {loading ? (
+          <p className="text-center mt-4 text-gray-500">Loading...</p>
+        ) : filteredCoins.length === 0 ? (
           <p className="text-center mt-4 text-gray-500">
             {coins.length === 0
               ? "⚠️ Unable to load coin data at the moment."

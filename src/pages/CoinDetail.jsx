@@ -132,7 +132,7 @@ function CoinDetail() {
             ) : (
               <div className="flex justify-between items-center">
                 <span className="text-sm text-blue-400 italic">
-                  {reminder ? `“${reminder}”` : "No reminder set."}
+                  {reminder ? `“$${reminder}”` : "No reminder set."}
                 </span>
                 <button
                   onClick={() => setEditMode(true)}

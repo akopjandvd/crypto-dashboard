@@ -7,6 +7,7 @@ import "./index.css";
 import Favorites from "./pages/Favorites.jsx";
 import CoinDetail from "./pages/CoinDetail";
 import TopMovers from "./pages/TopMovers";
+import PortfolioPage from "./pages/PortfolioPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/coin/:id" element={<CoinDetail />} />
         <Route path="/movers" element={<TopMovers />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
