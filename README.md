@@ -34,11 +34,21 @@ A responsive, modern cryptocurrency dashboard built with React 19 and Vite, powe
 ## 🧪 Testing
 
 ```bash
-npm run test
+npx vitest run
 ```
 
 The project uses `vitest` and `@testing-library/react` to provide fast and reliable tests.  
 Tests include mock API responses and simulated user interactions.
+
+CI keeps the `test` result on every main push and PR. It checks the complete
+event diff before installing application dependencies; only changes confined to
+this README can use document consistency checks. Source, tests, configuration,
+dependencies, workflows, unknown paths, renames or unavailable history run the
+existing Vitest flow. Superseded ordinary runs are cancelled. Scope regression
+tests run with `python3 -B .github/scripts/test_ci_scope.py` without npm packages.
+Manual workflow dispatch always runs full validation and has a separate,
+non-cancelling group. Checkout credentials are not persisted; CI uses read-only
+repository permissions and does not enable hosted dependency caching.
 
 ---
 
