@@ -15,7 +15,7 @@ A responsive, modern cryptocurrency dashboard built with React 19 and Vite, powe
 - 🔄 Live price updates from CoinGecko API
 - 📱 Fully responsive and mobile-friendly layout
 - ✅ Unit & component tests with Vitest and Testing Library
-- ⚙️ Continuous Integration via GitHub Actions
+- ⚙️ Manual full validation via GitHub Actions
 - 🌍 Deployed with GitHub Pages
 
 ---
@@ -33,6 +33,8 @@ A responsive, modern cryptocurrency dashboard built with React 19 and Vite, powe
 
 ## 🧪 Testing
 
+Run the application tests locally for routine changes, with project dependencies installed.
+
 ```bash
 npx vitest run
 ```
@@ -40,15 +42,12 @@ npx vitest run
 The project uses `vitest` and `@testing-library/react` to provide fast and reliable tests.  
 Tests include mock API responses and simulated user interactions.
 
-CI keeps the `test` result on every main push and PR. It checks the complete
-event diff before installing application dependencies; only changes confined to
-this README can use document consistency checks. Source, tests, configuration,
-dependencies, workflows, unknown paths, renames or unavailable history run the
-existing Vitest flow. Superseded ordinary runs are cancelled. Scope regression
-tests run with `python3 -B .github/scripts/test_ci_scope.py` without npm packages.
-Manual workflow dispatch always runs full validation and has a separate,
-non-cancelling group. Checkout credentials are not persisted; CI uses read-only
-repository permissions and does not enable hosted dependency caching.
+Scope regression tests run with `python3 -B .github/scripts/test_ci_scope.py`
+without npm packages. For a full GitHub run, select **CI - Build & Test** in
+**Actions** and choose **Run workflow**. Manual dispatch runs the scope tests
+and the full Vitest suite. Each dispatch has its own concurrency group. CI uses
+read-only repository permissions with checkout credential persistence and
+hosted dependency caching disabled.
 
 ---
 
